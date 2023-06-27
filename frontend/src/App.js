@@ -6,6 +6,7 @@ import {
   Switch,
 } from "react-router-dom";
 import NewPlace from "./places/pages/NewPlace";
+import UpdatePlace from "./places/pages/UpdatePlace";
 import UserPlaces from "./places/pages/UserPlaces";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import User from "./user/pages/User";
@@ -25,6 +26,9 @@ const App = () => {
           </Route>
           <Route path="/places/new" exact>
             <NewPlace />
+          </Route>
+          <Route path="/places/:placeId">
+            <UpdatePlace />
           </Route>
           {/* Redirect:- It will redirect to the home page whenever the user enters something which is not a route. */}
           <Redirect to="/" />
