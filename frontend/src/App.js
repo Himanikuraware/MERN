@@ -9,6 +9,7 @@ import NewPlace from "./places/pages/NewPlace";
 import UpdatePlace from "./places/pages/UpdatePlace";
 import UserPlaces from "./places/pages/UserPlaces";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
+import Auth from "./user/pages/Auth";
 import User from "./user/pages/User";
 
 const App = () => {
@@ -29,6 +30,9 @@ const App = () => {
           </Route>
           <Route path="/places/:placeId">
             <UpdatePlace />
+          </Route>
+          <Route path="/auth">
+            <Auth />
           </Route>
           {/* Redirect:- It will redirect to the home page whenever the user enters something which is not a route. */}
           <Redirect to="/" />
