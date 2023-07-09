@@ -3,7 +3,7 @@ const HttpError = require("../models/http-error");
 
 // Controllers have the middleware functions and the logic.
 
-const DUMMY_PLACES = [
+let DUMMY_PLACES = [
   {
     id: "p1",
     title: "Taj Mahal",
@@ -73,7 +73,11 @@ const updatePlace = (req, res, next) => {
   res.status(200).json({ place: updatedPlace });
 };
 
-const deletePlace = (req, res, next) => {};
+const deletePlace = (req, res, next) => {
+  const placeId = req.params.pid;
+  DUMMY_PLACES = DUMMY_PLACES.filter((p) => p.id !== placeId);
+  res.status(200).json({ message: "Deleted Place Successfully" });
+};
 
 //We can use this kind of export when we want to export more than one function or something.
 exports.getPlaceById = getPlaceById;
