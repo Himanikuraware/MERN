@@ -30,10 +30,10 @@ const getPlaceById = (req, res, next) => {
   res.json({ place });
 };
 
-const getPlaceByUserId = (req, res, next) => {
+const getPlacesByUserId = (req, res, next) => {
   const userId = req.params.uid;
-  const place = DUMMY_PLACES.find((p) => p.creator === userId);
-  if (!place) {
+  const places = DUMMY_PLACES.filter((p) => p.creator === userId);
+  if (!places || places.length === 0) {
     return next(
       new HttpError("Couldn't find a place for the provided user id"),
       404
@@ -42,7 +42,7 @@ const getPlaceByUserId = (req, res, next) => {
     //   .status(404)
     //   .json({ message: "Couldn't find a place for the provided user id" });
   }
-  res.json({ place });
+  res.json({ places });
 };
 
 const createPlace = (req, res, next) => {
@@ -81,7 +81,7 @@ const deletePlace = (req, res, next) => {
 
 //We can use this kind of export when we want to export more than one function or something.
 exports.getPlaceById = getPlaceById;
-exports.getPlaceByUserId = getPlaceByUserId;
+exports.getPlacesByUserId = getPlacesByUserId;
 exports.createPlace = createPlace;
 exports.updatePlace = updatePlace;
 exports.deletePlace = deletePlace;
