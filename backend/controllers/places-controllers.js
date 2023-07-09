@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const HttpError = require("../models/http-error");
 
 // Controllers have the middleware functions and the logic.
@@ -44,7 +45,21 @@ const getPlaceByUserId = (req, res, next) => {
   res.json({ place });
 };
 
-//We can use this kind of export when we want to export more than one function or something.
+const createPlace = (req, res, next) => {
+  const { title, description, coordinates, address, creator } = req.body;
+  const createdPlace = {
+    id: uuidv4(),
+    title,
+    description,
+    location: coordinates,
+    address,
+    creator,
+  };
+  DUMMY_PLACES.push(createdPlace);
+  res.status(201).json({ place: createdPlace });
+};
 
+//We can use this kind of export when we want to export more than one function or something.
 exports.getPlaceById = getPlaceById;
 exports.getPlaceByUserId = getPlaceByUserId;
+exports.createPlace = createPlace;

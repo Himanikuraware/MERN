@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const placesRoutes = require("./routes/places-routes");
 
 const app = express();
+
+app.use(bodyParser.json());
+
 app.use("/api/places", placesRoutes);
 
 //the function which has 4 parameters in express is recognized as a error handling middleware function.
