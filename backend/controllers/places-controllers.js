@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/http-error");
 const getCoordsForAddress = require("../util/location");
+const Place = require("../models/place");
 
 // Controllers have the middleware functions and the logic.
 
@@ -51,7 +52,9 @@ const getPlacesByUserId = (req, res, next) => {
 const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(new HttpError("Invalid inputs passed, Please check your data", 422));
+    return next(
+      new HttpError("Invalid inputs passed, Please check your data", 422)
+    );
   }
   const { title, description, address, creator } = req.body;
   let coordinates;
@@ -60,15 +63,21 @@ const createPlace = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
-  const createdPlace = {
-    id: uuidv4(),
+  const createdPlace = new Place({
     title,
     description,
-    location: coordinates,
     address,
+    location: coordinates,
+    image:
+      "https://img.freepik.com/free-photo/landscape-shot-beautiful-valley-surrounded-by-huge-mountains-with-snowy-peaks_181624-4296.jpg?w=1480&t=st=1689412597~exp=1689413197~hmac=8debf1021b39888530996465bec3332b73a614605d244ea8e528fbe68d4e1509",
     creator,
-  };
-  DUMMY_PLACES.push(createdPlace);
+  });
+  try {
+    await createdPlace.save();
+  } catch (err) {
+    const error = new HttpError("Creating place failed, please try again", 500);
+    return next(error);
+  }
   res.status(201).json({ place: createdPlace });
 };
 
