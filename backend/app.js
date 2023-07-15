@@ -28,7 +28,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://HimaniTest:himani@cluster0.2tfmflc.mongodb.net/places')
+  .connect('mongodb+srv://HimaniTest:himani@cluster0.2tfmflc.mongodb.net/mern')
   .then(() => {
     app.listen(5000);
   })
