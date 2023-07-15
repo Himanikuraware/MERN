@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/http-error");
@@ -8,21 +7,6 @@ const Place = require("../models/place");
 const User = require("../models/user");
 
 // Controllers have the middleware functions and the logic.
-
-let DUMMY_PLACES = [
-  {
-    id: "p1",
-    title: "Taj Mahal",
-    description: "Most beautiful symbol of love",
-    location: {
-      lat: 27.1751448,
-      lng: 78.0395673,
-    },
-    address:
-      "Dharmapuri, Forest Colony, Tajganj, Agra, Uttar Pradesh 282001, India",
-    creator: "u1",
-  },
-];
 
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
@@ -48,14 +32,15 @@ const getPlaceById = async (req, res, next) => {
 
 const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  let places;
+  // let places;
+  let userWithPlaces;
   try {
-    places = await Place.find({ creator: userId });
+    userWithPlaces = await User.findById(userId).populate("places");
   } catch (err) {
     const error = new HttpError("Fetching places failed", 500);
     return next(error);
   }
-  if (!places || places.length === 0) {
+  if (!userWithPlaces || userWithPlaces.places.length === 0) {
     return next(
       new HttpError("Couldn't find a place for the provided user id"),
       404
@@ -65,7 +50,7 @@ const getPlacesByUserId = async (req, res, next) => {
     //   .json({ message: "Couldn't find a place for the provided user id" });
   }
   res.json({
-    places: places.map((place) => place.toObject({ getters: true })),
+    places: userWithPlaces.places.map((place) => place.toObject({ getters: true })),
   });
 };
 
