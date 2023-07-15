@@ -32,7 +32,7 @@ const signup = async (req, res, next) => {
       new HttpError("Invalid inputs passed, Please check your data", 422)
     );
   }
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -55,7 +55,7 @@ const signup = async (req, res, next) => {
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg",
     password,
-    places,
+    places: [],
   });
   try {
     await createdUser.save();
