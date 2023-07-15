@@ -1,9 +1,11 @@
+const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/http-error");
 const getCoordsForAddress = require("../util/location");
 const Place = require("../models/place");
+const User = require("../models/user");
 
 // Controllers have the middleware functions and the logic.
 
@@ -90,8 +92,27 @@ const createPlace = async (req, res, next) => {
       "https://img.freepik.com/free-photo/landscape-shot-beautiful-valley-surrounded-by-huge-mountains-with-snowy-peaks_181624-4296.jpg?w=1480&t=st=1689412597~exp=1689413197~hmac=8debf1021b39888530996465bec3332b73a614605d244ea8e528fbe68d4e1509",
     creator,
   });
+
+  let user;
   try {
-    await createdPlace.save();
+    user = await User.findById(creator);
+  } catch (err) {
+    const error = new HttpError("Creating place failed", 500);
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError("Couldn't find user for provided id", 404);
+    return next(error);
+  }
+
+  try {
+    const currentSession = await mongoose.startSession();
+    currentSession.startTransaction();
+    await createdPlace.save({ session: currentSession });
+    user.places.push(createdPlace);
+    await user.save({ session: currentSession });
+    currentSession.commitTransaction();
   } catch (err) {
     const error = new HttpError("Creating place failed, please try again", 500);
     return next(error);
