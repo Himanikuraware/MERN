@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import Card from "../../shared/components/UIElements/Card/Card";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal/Modal";
-import "./PlaceItem.css";
 import Map from "../../shared/components/UIElements/Map/Map";
 import { AuthContext } from "../../shared/context/auth-context";
+import "./PlaceItem.css";
 
 const PlaceItem = (props) => {
   const auth = useContext(AuthContext);
@@ -35,8 +35,8 @@ const PlaceItem = (props) => {
         show={showMap}
         onCancel={closeMapHandler}
         header={props.address}
-        contentClass={"place-item__modal-content"}
-        footerClass={"place-item__modal-actions"}
+        contentClass="place-item__modal-content"
+        footerClass="place-item__modal-actions"
         footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
       >
         <div className="map-container">
