@@ -33,7 +33,7 @@ const signup = async (req, res, next) => {
 
   if (existingUser) {
     const error = new HttpError(
-      "User exists already, please login instaed",
+      "User exists already, please login instead",
       422
     );
     return next(error);
