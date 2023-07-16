@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../context/auth-context";
-import classes from "./NavLinks.module.css";
+import "./NavLinks.css";
 
 const NavLinks = () => {
   const auth = useContext(AuthContext); // useContext hook is use to get the contextApi data.
   return (
-    <ul className={classes["nav-links"]}>
+    <ul className="nav-links">
       <li>
         <NavLink to="/" exact>
           ALL USERS
