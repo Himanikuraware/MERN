@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -9,6 +11,9 @@ const HttpError = require("./models/http-error");
 const app = express();
 
 app.use(bodyParser.json());
+
+//Adding middleware for handling files.
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
   // Resolving CORS error.
@@ -31,6 +36,12 @@ app.use((req, res, next) => {
 
 //the function which has 4 parameters in express is recognized as a error handling middleware function.
 app.use((error, req, res, next) => {
+  if (req.file) {
+    // Deleting the file if error occurs.
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
   if (res.headerSent) {
     return next(error);
   }
