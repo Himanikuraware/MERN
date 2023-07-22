@@ -50,7 +50,9 @@ const getPlacesByUserId = async (req, res, next) => {
     //   .json({ message: "Couldn't find a place for the provided user id" });
   }
   res.json({
-    places: userWithPlaces.places.map((place) => place.toObject({ getters: true })),
+    places: userWithPlaces.places.map((place) =>
+      place.toObject({ getters: true })
+    ),
   });
 };
 
@@ -73,8 +75,7 @@ const createPlace = async (req, res, next) => {
     description,
     address,
     location: coordinates,
-    image:
-      "https://img.freepik.com/free-photo/landscape-shot-beautiful-valley-surrounded-by-huge-mountains-with-snowy-peaks_181624-4296.jpg?w=1480&t=st=1689412597~exp=1689413197~hmac=8debf1021b39888530996465bec3332b73a614605d244ea8e528fbe68d4e1509",
+    image: req.file.path,
     creator,
   });
 
