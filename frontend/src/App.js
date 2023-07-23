@@ -14,18 +14,18 @@ import Auth from "./user/pages/Auth";
 import User from "./user/pages/User";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState();
   const [userId, setUserId] = useState();
-  const login = useCallback((uid) => {
-    setIsLoggedIn(true);
+  const login = useCallback((uid, token) => {
+    setToken(token);
     setUserId(uid);
   }, []);
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(null);
     setUserId(null);
   }, []);
   let routes;
-  if (isLoggedIn) {
+  if (token) {
     // Switch:- It is user to switch between any routes because if we not use this then after first route execution it will redirect us to the home page again we we enter any other route
     routes = (
       <Switch>
@@ -62,7 +62,7 @@ const App = () => {
     );
   }
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn: !!token, token, userId, login, logout }}>
       <Router>
         <MainNavigation />
         <main>{routes}</main>
