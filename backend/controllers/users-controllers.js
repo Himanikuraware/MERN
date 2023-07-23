@@ -93,7 +93,7 @@ const login = async (req, res, next) => {
     return next(error);
   }
   if (!existingUser) {
-    const error = new HttpError("Invalid email or password", 401);
+    const error = new HttpError("Invalid email or password", 403);
     return next(error);
   }
 
