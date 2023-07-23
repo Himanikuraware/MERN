@@ -10,6 +10,7 @@ const getUsers = async (req, res, next) => {
   //It will give all the information except password.
   let users;
   try {
+    // -password excliuding password from the data.
     users = await User.find({}, "-password");
   } catch (err) {
     const error = new HttpError("Fetching Users failed", 500);
